@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class StudentService {
@@ -17,11 +18,19 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student addStudent(Student student){
+    public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
 
-    public List<Student> fetchStudents(){
+    public List<Student> fetchStudents() {
         return studentRepository.findAll();
+    }
+
+    public Student fetchStudentById(String studentId) {
+        return studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student with Id: " + studentId + " doesn't exist"));
+    }
+
+    public Student updateStudent(Student student) {
+        return addStudent(student);
     }
 }
