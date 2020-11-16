@@ -5,6 +5,7 @@ Simple Spring Boot application using MongoDb to perform Crud operation on studen
 
 ## Technologies
 - Spring Web
+- Java 11
 - Data MongoDb
 
 &copy; Aiwa dev 2020.
