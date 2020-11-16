@@ -23,16 +23,25 @@ public class StudentController {
         if (studentId != null) {
             return new ResponseEntity<>(studentService.fetchStudentById(studentId), HttpStatus.OK);
         }
-        return new ResponseEntity<>(studentService.fetchStudents(), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentService.fetchStudents(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> addStudent(@RequestBody Student student) {
-        return new ResponseEntity<>(studentService.addStudent(student), HttpStatus.OK);
+        return new ResponseEntity<>(studentService.addStudent(student), HttpStatus.CREATED);
     }
 
     @PatchMapping
     public ResponseEntity<?> updateStudent(@RequestBody Student student) {
         return new ResponseEntity<>(studentService.addStudent(student), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> removeStudent(String studentId) {
+        if (studentId == null) {
+            throw new IllegalArgumentException("Entity Id is needed!");
+        }
+        studentService.removeStudentById(studentId);
+        return new ResponseEntity<>("Student with id " + studentId + " removed", HttpStatus.OK);
     }
 }

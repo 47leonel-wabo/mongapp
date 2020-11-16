@@ -30,6 +30,11 @@ public class StudentService {
         return studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student with Id: " + studentId + " doesn't exist"));
     }
 
+    public void removeStudentById(String studentId) {
+        var student = fetchStudentById(studentId);
+        studentRepository.delete(student);
+    }
+
     public Student updateStudent(Student student) {
         return addStudent(student);
     }
