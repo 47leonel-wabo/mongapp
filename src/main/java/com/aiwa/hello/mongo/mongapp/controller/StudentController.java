@@ -5,6 +5,7 @@ import com.aiwa.hello.mongo.mongapp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> allStudents(String studentId) {
+    public ResponseEntity<?> allStudents(@RequestParam("studentId") @Nullable String studentId) {
         if (studentId != null) {
             return new ResponseEntity<>(studentService.fetchStudentById(studentId), HttpStatus.OK);
         }
@@ -36,10 +37,10 @@ public class StudentController {
         return new ResponseEntity<>(studentService.addStudent(student), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> removeStudent(String studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Entity Id is needed!");
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<?> removeStudent(@PathVariable String studentId) {
+        if (studentId == null || studentId.isBlank() || studentId.isEmpty()) {
+            return new ResponseEntity<>("Student ID required", HttpStatus.BAD_REQUEST);
         }
         studentService.removeStudentById(studentId);
         return new ResponseEntity<>("Student with id " + studentId + " removed", HttpStatus.OK);
