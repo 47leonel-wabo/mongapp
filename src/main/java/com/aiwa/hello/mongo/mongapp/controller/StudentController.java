@@ -3,6 +3,7 @@ package com.aiwa.hello.mongo.mongapp.controller;
 import com.aiwa.hello.mongo.mongapp.domain.Student;
 import com.aiwa.hello.mongo.mongapp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -25,6 +26,24 @@ public class StudentController {
             return new ResponseEntity<>(studentService.fetchStudentById(studentId), HttpStatus.OK);
         }
         return new ResponseEntity<>(studentService.fetchStudents(), HttpStatus.OK);
+    }
+
+    /*
+        Let's try using pagination
+        @Param pageNumber
+        @Param pageSize
+        TODO: Remember pages are zero-based indexed!
+     */
+    @GetMapping("/page")
+    public ResponseEntity<?> allStudentsUsingPagination(@RequestParam("pageNo") Integer pageNo,
+                                                        @RequestParam("pageSize") Integer pageSize) {
+        var pg = PageRequest.of(pageNo, pageSize);
+
+        /*
+            Return values into a content array with extra features added for description
+            TODO: To get ride of this array and extra properties add: ".getContent()" to return a list instead
+         */
+        return new ResponseEntity<>(studentService.fetchStudents(pg), HttpStatus.OK);
     }
 
     @PostMapping
